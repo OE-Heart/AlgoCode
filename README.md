@@ -1,2 +1,2 @@
 # BrushCode
-Personal LeetCode problem solved code record
+Personal code record for solved LeetCode problem
