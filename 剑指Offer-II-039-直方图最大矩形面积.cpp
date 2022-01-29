@@ -7,18 +7,19 @@ using namespace std;
 
 class Solution {
 public:
-    vector<int> dailyTemperatures(vector<int>& temperatures) {
-        int n = temperatures.size();
-        vector<int> res(n);
+    int largestRectangleArea(vector<int>& heights) {
+        heights.push_back(0);
+        int res = 0, height;
         vector<int> stack;
-        for (int i = 0; i < n; i++) {
-            while (stack.size() > 0 && temperatures[stack.back()] < temperatures[i]) {
-                res[stack.back()] = i-stack.back();
+        stack.push_back(-1);
+        for (int i = 0; i < heights.size(); i++) {
+            while (stack.size() > 1 && heights[stack.back()] > heights[i]) {
+                height = heights[stack.back()];
                 stack.pop_back();
+                res = max(res, height*(i-stack.back()-1));
             }
             stack.push_back(i);
         }
-
         return res;
     }
 };
@@ -50,31 +51,14 @@ vector<int> stringToIntegerVector(string input) {
     return output;
 }
 
-string integerVectorToString(vector<int> list, int length = -1) {
-    if (length == -1) {
-        length = list.size();
-    }
-
-    if (length == 0) {
-        return "[]";
-    }
-
-    string result;
-    for(int index = 0; index < length; index++) {
-        int number = list[index];
-        result += to_string(number) + ", ";
-    }
-    return "[" + result.substr(0, result.length() - 2) + "]";
-}
-
 int main() {
     string line;
     while (getline(cin, line)) {
-        vector<int> temperatures = stringToIntegerVector(line);
+        vector<int> heights = stringToIntegerVector(line);
         
-        vector<int> ret = Solution().dailyTemperatures(temperatures);
+        int ret = Solution().largestRectangleArea(heights);
 
-        string out = integerVectorToString(ret);
+        string out = to_string(ret);
         cout << out << endl;
     }
     return 0;
